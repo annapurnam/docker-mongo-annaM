@@ -1,0 +1,28 @@
+version: "2"
+services:
+ nginx:
+   build: ./nginx/.
+   depends_on:
+     - anna-node-1
+   image: anna-nginx-image-1:latest
+   container_name: anna-nginx-run-1
+   ports:
+     - "80:80"
+ anna-node-1:
+  build: .
+  image: anna-node-image-1
+  container_name: anna-node-run-1
+  env_file:
+   - .env.list
+  environment:
+   - NODE_ENV=${NODE_ENV}
+   - MONGOHQ_URL=${MONGOHQ_URL}
+  depends_on:
+   - mongo
+  ports:
+   - "3000"
+ mongo:
+  image: mongo
+  container_name: anna-mongo-run-1
+  ports:
+    - "27017"
